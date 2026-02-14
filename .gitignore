@@ -1,0 +1,10 @@
+# Claude Code local directory
+.claude/
+
+# macOS
+.DS_Store
+
+# Temporary files
+*.tmp
+*.swp
+*~
