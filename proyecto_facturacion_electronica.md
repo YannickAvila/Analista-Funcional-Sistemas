@@ -1,19 +1,38 @@
 # ANÁLISIS FACTURACIÓN ELECTRÓNICA GNV/SEI
 ## Matriz ejecutiva — Estado exploración inicial
 
-*Actualizado: 18 febrero 2026. Exploración inicial completada en Escenarios 1, 2 y 3.*
+> **Plazo normativo: septiembre 2026** (~7 meses) | Última actualización: 18 feb 2026 | Escenarios 1, 2 y 3 explorados; Escenario 4 pendiente de validación
 
 ---
 
-## CONTEXTO
+## 1. CUADRO DE MANDO EJECUTIVO
 
-Obligación normativa francesa: generación XML UBL 2.1 + comunicación con SERES como PDP (Plataforma de Desmaterialización Partner).
+| Escenario | | Estado | Postura actual | Condición de desbloqueo |
+|---|---|---|---|---|
+| **1 — E4E** | 🔴 | En espera | En espera — posición E4E pendiente (abril) | Posición formal E4E tras valoración del liderazgo |
+| **2 — SAP-ISU** | 🟡 | Condicional (solo GNV) | Viable solo GNV; SEI requiere decisión separada | DSI confirma viabilidad CI-ISU para GNV cíclico sin configuraciones artificiales |
+| **3 — Kintsugi** | 🟢 | Viable como transitorio | Transitorio viable con condiciones — opción más rápida para sep 2026 | SERES confirma sin firma XML + Cobros define proceso estados + dirección formaliza cobertura |
+| **4 — SAP especializado** | ⚪ | Concepto a visibilizar | Pendiente validación licencias — objetivo estratégico a largo plazo | DSI confirma disponibilidad licencias BRIM/RFNO en S/4HANA actual |
 
-**Restricción transversal:** SERES no ha publicado la especificación técnica completa. Solo disponible un Excel UBL 2.1 genérico; sin campos obligatorios específicos energía/GNV/SEI, sin documentación de API ni proceso de homologación. Esta limitación afecta a todos los escenarios por igual.
+**Prerequisitos que bloquean todos los escenarios:**
+
+1. **Especificación SERES incompleta** — Sin campos energía, sin API documentada; ningún escenario puede dimensionarse sin esto
+2. **Proceso Cobros sin definir** — GNV/SEI opera en domiciliado; los rechazos SERES son funcionalmente críticos y no hay workflow establecido
+3. **Firma electrónica SERES sin confirmar** — Modelo FTP sugiere sin XMLDSig, pero no está validado; condiciona el esfuerzo técnico de cualquier escenario
+
+**Postura recomendada actual:** Avanzar en Escenario 3 (Kintsugi/MySQL+Python) como solución puente para septiembre 2026, en paralelo con: (a) reunión urgente SERES para spec energía y confirmación firma, (b) kick-off proceso Cobros, (c) visibilización Escenario 4 a dirección como objetivo SAP definitivo a largo plazo.
 
 ---
 
-## GNV Y SEI: DOS UNIVERSOS DISTINTOS
+## 2. CONTEXTO
+
+**Obligación normativa francesa:** generación XML UBL 2.1 + comunicación con SERES como PDP (Plataforma de Desmaterialización Partner). **Fecha límite: septiembre 2026** — ~7 meses desde la fecha de este análisis.
+
+**Restricción transversal:** SERES no ha publicado la especificación técnica completa. Solo disponible un Excel UBL 2.1 genérico; sin campos obligatorios específicos energía/GNV/SEI, sin documentación de API ni proceso de homologación. Esta limitación afecta a todos los escenarios por igual y constituye el prerequisito #1 de cualquier avance.
+
+---
+
+## 3. GNV Y SEI: DOS UNIVERSOS DISTINTOS
 
 GNV y SEI no son un monolito. Su naturaleza de facturación es radicalmente diferente, y esto tiene implicaciones directas sobre qué escenarios pueden cubrir cada producto.
 
@@ -31,25 +50,23 @@ GNV y SEI no son un monolito. Su naturaleza de facturación es radicalmente dife
 
 ---
 
-## ESTADO DE EXPLORACIÓN POR ESCENARIO
+## 4. PREREQUISITOS DE DECISIÓN
 
-| Escenario | Estado actual | Señal dominante | Condición de desbloqueo |
+Estas incógnitas bloquean o condicionan todos los escenarios. Deben resolverse antes de comprometer ninguna inversión.
+
+| Prerequisito | Estado | Acción necesaria | Responsable acción |
 |---|---|---|---|
-| **1 — E4E** | En espera | Alerta | Posición formal E4E tras valoración (congelado hasta abril) |
-| **2 — SAP-ISU** | Condicional (solo GNV) | Negativa para SEI / Verde para Cobros | DSI confirma viabilidad CI-ISU para GNV cíclico sin configuraciones artificiales |
-| **3 — Kintsugi** | Viable como transitorio | Verde con alertas | SERES confirma sin firma XML + Cobros define proceso estados + dirección formaliza cobertura |
-| **4 — SAP especializado** | Concepto a visibilizar | Pendiente | DSI confirma disponibilidad licencias BRIM/RFNO en S/4HANA actual |
+| Especificación técnica SERES completa | Sin publicar: solo Excel UBL 2.1 genérico; sin campos energía ni API | Reunión SERES para obtener spec energía + documentación API + proceso homologación | SERES |
+| Firma electrónica SERES | Sin confirmar (modelo FTP sugiere sin XMLDSig) | Pregunta directa a SERES: ¿firma a nivel documento o solo autenticación canal FTP? | SERES |
+| Proceso Cobros GNV/SEI para estados SERES | No definido: Cobros asumía transferencias, pero GNV/SEI va en domiciliado | Reunión Cobros para definir workflow rechazos/aceptaciones (prerequisito de cualquier escenario) | Cobros |
+| Escenario 4 (BRIM/RFNO) — disponibilidad licencias | Desconocida: DSI no tenía este concepto en el radar | Pregunta a DSI: ¿S/4HANA actual incluye licencias BRIM y/o RFNO? | DSI |
 
 ---
 
-## MATRIZ COMPARATIVA — HALLAZGOS REALES
+## 5. MATRIZ COMPARATIVA — HALLAZGOS REALES
 
 | Criterio | **ESC 1: E4E** | **ESC 2: SAP-ISU** | **ESC 3: Kintsugi** | **ESC 4: SAP especializado** |
 |---|---|---|---|---|
-| **COBERTURA PRODUCTOS** | | | | |
-| GNV cíclico | Sí | Sí (con condiciones) | Sí | Sí |
-| GNV one-shot | Sí | Requiere workaround | Sí | Sí |
-| SEI esporádico | Sí | No (incompatible diseño) | Sí | Sí (BRIM nativo) |
 | **STACK TÉCNICO REAL** | | | | |
 | Arquitectura | E4E (módulo SAP customizado) | CI sobre SAP-ISU (utilities) | MySQL + Python / app externa | RFNO + BRIM (módulos especializados) |
 | Generación XML UBL | A desarrollar (capacidad a confirmar) | A desarrollar (capacidad a confirmar) | A desarrollar (Python sobre MySQL) | Nativo BRIM |
@@ -65,6 +82,7 @@ GNV y SEI no son un monolito. Su naturaleza de facturación es radicalmente dife
 | Estados SERES | A integrar (depende E4E) | Integrable vía SAP | Manual / semi-automático | Integrable vía SAP |
 | **PLAZO Y COSTE** | | | | |
 | Plazo orientativo | Meses (si E4E acepta) | Meses–año | Semanas–meses | Año+ (licensing + implementación) |
+| Compatibilidad sep 2026 | Incierta (depende E4E) | Ajustada | Sí — opción más rápida | No — incompatible con plazo normativo |
 | Coste desarrollo | Medio | Alto (IT + interfaces + Iliade si aplica) | Bajo (interno) | Muy alto (licensing RFNO/BRIM) |
 | Coste licensing | Sin adicional | Sin adicional (CI ya activo) | Sin adicional | Sí (RFNO y/o BRIM) |
 | **HORIZONTE** | | | | |
@@ -77,27 +95,9 @@ GNV y SEI no son un monolito. Su naturaleza de facturación es radicalmente dife
 
 ---
 
-## INCÓGNITAS TRANSVERSALES (afectan a todos los escenarios)
+## Escenario 1: Adaptar E4E
 
-| Incógnita | Estado | Acción necesaria |
-|---|---|---|
-| Especificación técnica SERES completa | Sin publicar: solo Excel UBL 2.1 genérico; sin campos energía ni API | Reunión SERES para obtener spec energía + documentación API + proceso homologación |
-| Firma electrónica SERES | Sin confirmar (modelo FTP sugiere sin XMLDSig) | Pregunta directa a SERES: ¿firma a nivel documento o solo autenticación canal FTP? |
-| Proceso Cobros GNV/SEI para estados SERES | No definido: Cobros asumía transferencias, pero GNV/SEI va en domiciliado | Reunión Cobros para definir workflow rechazos/aceptaciones (prerequisito de cualquier escenario) |
-| Escenario 4 (BRIM/RFNO) — disponibilidad licencias | Desconocida: DSI no tenía este concepto en el radar | Pregunta a DSI: ¿S/4HANA actual incluye licencias BRIM y/o RFNO? |
-
----
----
----
-
-# ESCENARIO 1: ADAPTAR E4E - VISIÓN FUNCIONAL
-## Facturación Electrónica GNV/SEI
-
----
-
-## RESUMEN EJECUTIVO
-
-### ¿Qué es este escenario?
+### Qué es este escenario
 
 Este escenario propone **ampliar las capacidades de E4E** (sistema actual de registro fiscal y numeración de facturas) para que asuma la generación completa de XMLs UBL 2.1 y la comunicación con SERES como PDP (Plataforma de Desmaterialización Partner).
 
@@ -110,18 +110,16 @@ Este escenario propone **ampliar las capacidades de E4E** (sistema actual de reg
 - **Potencial integración Cobros:** Estados SERES podrían autorizar/bloquear cobros según validación de factura
 - **Escalabilidad corporativa:** Sistema corporativo con soporte IT institucional
 
-### Limitaciones críticas (actualizadas con hallazgos)
+### Limitaciones críticas
 
 - **Apertura organizacional comprometida:** E4E actualmente no quiere el proyecto; considera que su rol es contable, no de facturación electrónica
 - **GAP datos estructural:** E4E solo recibe importes contables agregados — la interface requiere rediseño completo para soportar UBL
 - **Ventaja Cobros diluida:** El departamento de Cobros GNV/SEI ya opera fuera de sistemas; la integración E4E-Cobros no aporta el valor diferencial esperado
 - **Capacidad XML desconocida:** E4E es módulo SAP customizado — la capacidad de generar XML UBL no está confirmada
 
----
+### Hallazgos de la exploración inicial
 
-## HALLAZGOS DE LA EXPLORACIÓN INICIAL
-
-### 1. Apertura organizacional — Señal de alerta
+#### 1. Apertura organizacional — Señal de alerta
 
 **Pregunta:** ¿El departamento E4E está abierto a asumir este proyecto?
 
@@ -129,11 +127,9 @@ Este escenario propone **ampliar las capacidades de E4E** (sistema actual de reg
 
 **Análisis:** La resistencia no es técnica sino de posicionamiento. E4E defiende un perímetro funcional acotado y no quiere ampliarlo. La presión del liderazgo puede forzar la evaluación, pero no garantiza la ejecución ni la calidad del estudio técnico resultante.
 
-**Implicación para el escenario:** Si E4E no asume el proyecto con convicción, el riesgo de ejecución deficiente o abandono a medio plazo es alto. El escenario depende críticamente de un cambio de posición de E4E — hecho o voluntad política, no confirmados aún.
+**Implicación:** Si E4E no asume el proyecto con convicción, el riesgo de ejecución deficiente o abandono a medio plazo es alto. El escenario depende críticamente de un cambio de posición de E4E — hecho o voluntad política, no confirmados aún.
 
----
-
-### 2. Capacidad técnica XML — Pendiente de confirmación
+#### 2. Capacidad técnica XML — Pendiente de confirmación
 
 **Pregunta:** ¿E4E tiene capacidad técnica para generar XMLs UBL 2.1?
 
@@ -145,9 +141,7 @@ Este escenario propone **ampliar las capacidades de E4E** (sistema actual de reg
 
 **Implicación:** Dimensión no bloqueante por sí sola, pero crítica para estimar esfuerzo. A confirmar en estudio técnico DSI.
 
----
-
-### 3. GAP datos EVO → UBL — Señal negativa
+#### 3. GAP datos EVO → UBL — Señal negativa
 
 **Pregunta:** ¿Qué datos recibe E4E actualmente desde Kintsugi? ¿El EVO contiene información suficiente para construir un XML UBL 2.1?
 
@@ -157,9 +151,7 @@ Este escenario propone **ampliar las capacidades de E4E** (sistema actual de reg
 
 **Implicación:** La interface Kintsugi → E4E requiere **rediseño completo**, no ampliación. Esfuerzo significativo en el lado Kintsugi (Access/VBA) y en E4E. Esto aplica independientemente de la capacidad XML de E4E.
 
----
-
-### 4. Integración Cobros — Señal negativa (ventaja diferencial diluida)
+#### 4. Integración Cobros — Señal negativa (ventaja diferencial diluida)
 
 **Pregunta:** ¿Cómo funciona el proceso de Cobros GNV/SEI? ¿Puede integrarse con E4E para automatizar la puesta al cobro según estados SERES?
 
@@ -169,9 +161,7 @@ Este escenario propone **ampliar las capacidades de E4E** (sistema actual de reg
 
 **Implicación:** La ventaja estratégica que diferenciaba E4E de Kintsugi (Escenario 3) se reduce significativamente. Kintsugi ya hace facturación — E4E ya no tiene una ventaja funcional clara que justifique el esfuerzo de desarrollo adicional.
 
----
-
-### 5. Especificación técnica SERES — Parcialmente disponible
+#### 5. Especificación técnica SERES — Parcialmente disponible
 
 **Pregunta:** ¿SERES ha publicado la especificación técnica definitiva (esquema UBL 2.1, campos obligatorios, API)?
 
@@ -181,9 +171,7 @@ Este escenario propone **ampliar las capacidades de E4E** (sistema actual de reg
 
 **Implicación:** Esta limitación **aplica a todos los escenarios**, no es específica de E4E. No es bloqueante para evaluar el escenario, pero impide dimensionar con precisión el esfuerzo de mapping UBL. Requiere trabajo conjunto funcional + técnico con SERES.
 
----
-
-## RESUMEN DE SEÑALES
+### Resumen de señales
 
 | # | Dimensión | Señal | Observación |
 |---|---|---|---|
@@ -195,9 +183,7 @@ Este escenario propone **ampliar las capacidades de E4E** (sistema actual de reg
 
 3 señales negativas o de alerta · 1 pendiente · 1 parcial (transversal)
 
----
-
-## CRITERIO DE DECISIÓN (actualizado)
+### Criterio de decisión
 
 **PROFUNDIZAR si:**
 - E4E confirma apertura al proyecto tras valoración (no solo bajo presión, sino con compromiso real)
@@ -214,11 +200,7 @@ Este escenario propone **ampliar las capacidades de E4E** (sistema actual de reg
 - El GAP de rediseño de interface resulta desproporcionado (coste Kintsugi + E4E > alternativas)
 - No existe ventaja funcional clara de E4E sobre Kintsugi una vez descartada la integración Cobros
 
----
-
-## PRÓXIMOS PASOS — ESTUDIO TÉCNICO DSI
-
-La DSI debe analizar las siguientes dimensiones antes de que este escenario pueda avanzar:
+### Próximos pasos — Estudio técnico DSI
 
 1. **Posición E4E:** Obtener valoración formal del departamento E4E sobre viabilidad y disposición al proyecto (no solo confirmación de que "lo estudiarán")
 2. **Capacidad XML del módulo E4E:** ¿El customizado SAP tiene generación XML activa? ¿Vía ABAP, PI/CPI u otro? ¿Esfuerzo estimado de desarrollo?
@@ -227,17 +209,10 @@ La DSI debe analizar las siguientes dimensiones antes de que este escenario pued
 5. **Especificación SERES energía:** Trabajo conjunto con SERES para obtener campos obligatorios específicos GNV/SEI (aplica a todos los escenarios)
 
 ---
----
----
 
-# ESCENARIO 2: ADAPTAR SAP-ISU - VISIÓN FUNCIONAL
-## Facturación Electrónica GNV/SEI
+## Escenario 2: Adaptar SAP-ISU
 
----
-
-## RESUMEN EJECUTIVO
-
-### ¿Qué es este escenario?
+### Qué es este escenario
 
 Este escenario propone que **SAP asuma la facturación GNV/SEI** utilizando la arquitectura SAP actual: Convergent Invoicing (CI) instalado sobre SAP-ISU, la misma configuración que factura Electricidad mediante ficheros VEMS desde IBIS.
 
@@ -253,18 +228,16 @@ El análisis de este escenario cubre principalmente GNV. SEI no es un monolito c
 - **Sistema corporativo con soporte IT:** Infraestructura con respaldo institucional y escalabilidad sin límites técnicos
 - **Cálculo externo preservado:** CI sobre ISU no obliga a recalcular en SAP — GAIA/EVO siguen siendo el motor de cálculo; SAP asume facturación, numeración fiscal y comunicación SERES
 
-### Limitaciones críticas (actualizadas con hallazgos)
+### Limitaciones críticas
 
 - **SEI no encaja en CI sobre ISU sin configuraciones artificiales:** El billing cycle periódico es incompatible por diseño con eventos esporádicos. No es resoluble con desarrollo adicional — es una limitación de arquitectura
 - **ISU-Francia ya sobrecargado de adaptaciones:** El ISU francés acumula demasiados customizings y ya está lejos del estándar SAP. Añadir CI sobre ISU para GNV/SEI introduce más capas sobre una base frágil — riesgo técnico real a largo plazo
 - **Evidencia del fracaso previo con participación funcional:** ISU clásico fue descartado para gasineras (universo de instalaciones no natural, cálculo interno tramposo y costoso). CI sobre ISU resuelve el universo de instalaciones pero hereda la base utilities que genera la incompatibilidad con SEI
 - **Dependencia Iliade si se elige ruta IBIS:** Añade un integrador externo fuera del control de DSI; el seguimiento técnico y coordinación recaerían sobre Negocio
 
----
+### Hallazgos de la exploración inicial
 
-## HALLAZGOS DE LA EXPLORACIÓN INICIAL
-
-### 1. SEI vs GNV en el perímetro del escenario — Señal de alerta
+#### 1. SEI vs GNV en el perímetro del escenario — Señal de alerta
 
 **Pregunta:** ¿SEI es producto crítico que debe resolver el mismo escenario que GNV, o es marginal?
 
@@ -274,9 +247,7 @@ El análisis de este escenario cubre principalmente GNV. SEI no es un monolito c
 
 **Implicación:** El resumen ejecutivo debe dejar explícito que este escenario cubre GNV cíclico y que SEI requiere decisión separada. Los ejecutivos deben entender esto antes de cualquier decisión de inversión SAP.
 
----
-
-### 2. Evidencia del intento previo ISU gasineras — Señal negativa (bien documentada)
+#### 2. Evidencia del intento previo ISU gasineras — Señal negativa (bien documentada)
 
 **Pregunta:** ¿Cuál fue la razón exacta del descarte? ¿Hay documentación?
 
@@ -286,9 +257,7 @@ El análisis de este escenario cubre principalmente GNV. SEI no es un monolito c
 
 **Implicación:** La experiencia previa es un argumento técnico sólido y documentado. Refuerza que cualquier inversión SAP seria debe contemplar módulos especializados (Escenario 4), no repetir la lógica utilities sobre ISU.
 
----
-
-### 3. Módulo SAP especializado (Escenario 4) — Señal pendiente con intención de visibilizar
+#### 3. Módulo SAP especializado (Escenario 4) — Señal pendiente con intención de visibilizar
 
 **Pregunta:** ¿Hay voluntad y presupuesto para explorar módulos SAP especializados (BRIM, RFNO)?
 
@@ -298,9 +267,7 @@ El análisis de este escenario cubre principalmente GNV. SEI no es un monolito c
 
 **Implicación:** El Escenario 2 simplificado debe concluir con remisión explícita al Escenario 4 como opción estratégica superior si la decisión es SAP. No como recomendación ejecutada, sino como concepto a incluir en el mapa de decisión ejecutivo.
 
----
-
-### 4. Ventaja real de Cobros integrado en SAP — Señal verde
+#### 4. Ventaja real de Cobros integrado en SAP — Señal verde
 
 **Pregunta:** ¿Cobros en SAP es ventaja real o teórica, dado que Cobros GNV/SEI opera fuera de sistemas?
 
@@ -310,9 +277,7 @@ El análisis de este escenario cubre principalmente GNV. SEI no es un monolito c
 
 **Implicación:** La ventaja Cobros es el argumento más sólido a favor de este escenario. Debe mantenerse en el resumen con claridad, independientemente de las limitaciones arquitectónicas sobre SEI.
 
----
-
-### 5. Dependencia IBIS/Iliade — Señal de alerta
+#### 5. Dependencia IBIS/Iliade — Señal de alerta
 
 **Pregunta:** ¿Se ha sondeado a Iliade sobre viabilidad de adaptar IBIS para GNV?
 
@@ -322,9 +287,7 @@ El análisis de este escenario cubre principalmente GNV. SEI no es un monolito c
 
 **Implicación:** Los sub-escenarios que pasan por IBIS tienen una complejidad de gestión adicional — coordinación con Iliade recayendo en Negocio — que debe ser explícita en el análisis de riesgos.
 
----
-
-## RESUMEN DE SEÑALES
+### Resumen de señales
 
 | # | Dimensión | Señal | Observación |
 |---|---|---|---|
@@ -336,9 +299,7 @@ El análisis de este escenario cubre principalmente GNV. SEI no es un monolito c
 
 1 señal verde · 1 negativa · 2 alertas · 1 pendiente
 
----
-
-## CRITERIO DE DECISIÓN (actualizado)
+### Criterio de decisión
 
 **PROFUNDIZAR (solo GNV cíclico, sin SEI) si:**
 - La decisión estratégica es SAP con configuración actual (sin inversión en módulos nuevos)
@@ -356,9 +317,7 @@ El análisis de este escenario cubre principalmente GNV. SEI no es un monolito c
 - La complejidad de coordinación con Iliade (si se elige ruta IBIS) es inaceptable para Negocio
 - Escenario 3 (Kintsugi/MySQL + Python) cubre el objetivo a corto plazo y SAP se reserva para el largo plazo con módulos adecuados
 
----
-
-## PRÓXIMOS PASOS — ESTUDIO TÉCNICO DSI
+### Próximos pasos — Estudio técnico DSI
 
 1. **Separar GNV y SEI como preguntas independientes:** Solicitar a DSI análisis formal diferenciado — ¿cómo factura CI-ISU GNV cíclico con cálculos externos? ¿Qué hace España con servicios equivalentes a SEI (SD)? ¿Es trasladable a Francia?
 2. **Viabilidad CI sobre ISU para GNV cíclico:** ¿Puede CI absorber GNV con GAIA/EVO como motor de cálculo externo, sin universo de instalaciones? ¿Qué adaptaciones serían necesarias? ¿Esfuerzo y coste estimado?
@@ -368,20 +327,9 @@ El análisis de este escenario cubre principalmente GNV. SEI no es un monolito c
 
 ---
 
-[Espacio para notas adicionales durante desarrollo del análisis]
+## Escenario 3: Kintsugi como generador XML
 
----
----
----
-
-# ESCENARIO 3: KINTSUGI COMO GENERADOR XML - VISIÓN FUNCIONAL
-## Facturación Electrónica GNV/SEI
-
----
-
-## RESUMEN EJECUTIVO
-
-### ¿Qué es este escenario?
+### Qué es este escenario
 
 Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin cambios estructurales** y añadir capacidades al ecosistema Kintsugi para que asuma la generación de XMLs UBL 2.1 y la comunicación con SERES como PDP.
 
@@ -397,18 +345,16 @@ Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin 
 - **Volumetría muy manejable:** 255 facturas/mes (250 GNV + 5 SEI), sin proyección de crecimiento — cualquier solución técnica lo aguanta con margen
 - **Coste contenido:** Sin licencias adicionales ni consultoría externa; solo coste PDP SERES (común a todos los escenarios)
 
-### Limitaciones críticas (actualizadas con hallazgos)
+### Limitaciones críticas
 
 - **Complejidad UBL sin apoyo técnico externo:** Generar XML UBL 2.1 conforme al esquema SERES requiere dominio del estándar — la responsabilidad recaerá sobre personas cuya función principal no es sistemas. Riesgo real de subestimar la complejidad
 - **Proceso Cobros pendiente de definir:** Cobros GNV/SEI aún no ha estudiado cómo gestionará los estados SERES; el modelo domiciliado hace que los rechazos sean funcionalmente críticos. No hay proceso definido
 - **Dependencia en 2 personas clave:** La solución funciona mientras esas personas estén disponibles; sin cobertura formal ni succession plan, es un riesgo de continuidad
 - **Firma electrónica SERES sin confirmar:** El modelo FTP sugiere que no se requiere XMLDSig, pero no está confirmado; si SERES exige firma avanzada, abre una complejidad adicional
 
----
+### Hallazgos de la exploración inicial
 
-## HALLAZGOS DE LA EXPLORACIÓN INICIAL
-
-### 1. Viabilidad técnica del stack — Señal verde con matiz
+#### 1. Viabilidad técnica del stack — Señal verde con matiz
 
 **Pregunta:** ¿Access/VBA puede generar XML válido? ¿O es una incógnita total?
 
@@ -418,9 +364,7 @@ Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin 
 
 **Implicación:** El stack es viable en principio. El riesgo real es la complejidad de implementación asumida por personas con perfil funcional, no técnico.
 
----
-
-### 2. Firma electrónica SERES — Señal pendiente (probablemente favorable)
+#### 2. Firma electrónica SERES — Señal pendiente (probablemente favorable)
 
 **Pregunta:** ¿SERES exige firma electrónica XML (XMLDSig)?
 
@@ -430,9 +374,7 @@ Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin 
 
 **Implicación:** Probablemente no bloqueante, pero a confirmar con SERES antes de iniciar desarrollo. Pregunta concreta a hacer en la siguiente reunión SERES.
 
----
-
-### 3. Volumetría GNV/SEI — Señal verde
+#### 3. Volumetría GNV/SEI — Señal verde
 
 **Pregunta:** ¿Cuántas facturas se emiten mensualmente? ¿Hay crecimiento proyectado?
 
@@ -442,9 +384,7 @@ Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin 
 
 **Implicación:** Dimensión completamente descartada como riesgo. La solución puede ser técnicamente sencilla y seguirá siendo válida indefinidamente en términos de volumetría.
 
----
-
-### 4. Operativa estados SERES con Cobros — Señal de alerta
+#### 4. Operativa estados SERES con Cobros — Señal de alerta
 
 **Pregunta:** ¿Cobros GNV/SEI puede operar con gestión manual de estados SERES?
 
@@ -454,9 +394,7 @@ Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin 
 
 **Implicación:** Antes de entrar en producción, Cobros debe definir su proceso de gestión de estados. Este es un deliverable funcional independiente del escenario técnico elegido — aplica a todos los escenarios.
 
----
-
-### 5. Aceptabilidad como solución transitoria — Señal de alerta con condición
+#### 5. Aceptabilidad como solución transitoria — Señal de alerta con condición
 
 **Pregunta:** ¿La dirección acepta Kintsugi como puente temporal?
 
@@ -466,9 +404,7 @@ Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin 
 
 **Implicación:** Para que el escenario sea viable como transitorio, la dirección debe formalizar: (1) quién da cobertura técnica, (2) el horizonte temporal explícito, (3) el trigger de migración. Sin esto, el riesgo de dependencia en personas clave es el mayor riesgo del escenario.
 
----
-
-## RESUMEN DE SEÑALES
+### Resumen de señales
 
 | # | Dimensión | Señal | Observación |
 |---|---|---|---|
@@ -480,9 +416,7 @@ Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin 
 
 2 señales verdes · 2 alertas · 1 pendiente (probablemente favorable)
 
----
-
-## CRITERIO DE DECISIÓN (actualizado)
+### Criterio de decisión
 
 **PROFUNDIZAR si:**
 - SERES confirma que no requiere firma XML avanzada (o que la firma del canal FTP es suficiente)
@@ -500,9 +434,7 @@ Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin 
 - La dirección exige solución corporativa definitiva desde el inicio (no acepta transitorio)
 - El equipo valora honestamente que la complejidad UBL supera sus capacidades sin apoyo técnico externo
 
----
-
-## PRÓXIMOS PASOS — ESTUDIO TÉCNICO DSI
+### Próximos pasos — Estudio técnico DSI
 
 1. **Confirmar requerimiento firma electrónica SERES:** Pregunta directa y documentada en siguiente contacto con SERES — ¿el XML debe llevar XMLDSig o la autenticación es solo a nivel FTP/SFTP?
 2. **Prototipo generador XML UBL 2.1:** Validar complejidad real con un prototipo mínimo (Python leyendo MySQL, generando XML conforme al Excel SERES disponible) — este es el test de viabilidad técnica más directo
@@ -512,6 +444,67 @@ Este escenario propone **mantener el proceso actual de facturación GNV/SEI sin 
 
 ---
 
-## NOTAS Y COMENTARIOS ADICIONALES
+## Escenario 4: SAP especializado (BRIM/RFNO)
 
-[Espacio para añadir notas durante el desarrollo del análisis]
+> **Estado:** Concepto a visibilizar — pendiente de validación. Este escenario no ha sido explorado con DSI. El objetivo es incluirlo en el mapa de decisión ejecutivo antes de comprometer inversiones en adaptaciones sobre ISU.
+
+### Qué es este escenario
+
+Este escenario propone utilizar **módulos SAP especializados en facturación de servicios y eventos**: BRIM (Billing and Revenue Innovation Management, anteriormente SAP Hybris Billing) para gestión de eventos de facturación esporádicos, y/o RFNO (Revenue Accounting and Reporting, IS-OIL) para operaciones de tipo gasinera.
+
+A diferencia del Escenario 2 (CI sobre ISU), estos módulos están **diseñados arquitectónicamente para facturación de servicios sin patrón periódico** — lo que resuelve nativamente la incompatibilidad estructural de ISU con SEI y elimina la necesidad de configuraciones artificiales sobre una base utilities.
+
+**Por qué es necesario visibilizarlo ahora:** el riesgo de no incluirlo en el debate es que la dirección invierta en adaptaciones ISU (Escenario 2) sin saber que existen alternativas SAP diseñadas específicamente para este modelo de negocio. Una vez tomada esa inversión, el coste de cambio se multiplica.
+
+### Ventajas principales (hipotéticas — pendiente validación técnica)
+
+- **Cobertura nativa GNV + SEI:** BRIM gestiona eventos de facturación esporádicos por diseño — sin billing cycles forzados ni configuraciones artificiales
+- **FICA real:** Misma ventaja de Cobros integrados que Escenario 2, pero con arquitectura más limpia y sostenible
+- **Solución corporativa definitiva:** Evita la acumulación de deuda técnica sobre ISU-Francia ya sobrecargado
+- **Separación arquitectónica limpia:** Módulos especializados separados de ISU — no añade capas a una base frágil
+- **Alineación con dirección estratégica SAP:** Si el grupo tiene roadmap S/4HANA, BRIM es la dirección natural para billing de servicios
+
+### Alertas y riesgos conocidos
+
+- **Licensing BRIM/RFNO:** Coste significativo, posiblemente prohibitivo; no confirmado si está disponible en el S/4HANA actual — esta es la pregunta bloqueante
+- **Incompatible con el plazo de septiembre 2026:** Si las licencias no están ya activadas, la implementación requerirá año o más (adquisición + consultoría especializada + configuración + homologación SERES)
+- **DSI sin experiencia confirmada:** Concepto nuevo para el equipo DSI — nivel de conocimiento interno en BRIM/RFNO desconocido; probablemente requeriría consultoría externa especializada
+- **Prioridad en roadmap IT incierta:** No estaba en el radar de DSI; posicionarlo como prioridad requiere decisión ejecutiva explícita
+- **Este escenario no sustituye la necesidad de sep 2026:** Incluso si se decide avanzar, el plazo normativo requiere una solución puente (Escenario 3) mientras BRIM/RFNO se implementa
+
+### Resumen de señales
+
+| # | Dimensión | Señal | Observación |
+|---|---|---|---|
+| 1 | Disponibilidad licencias BRIM/RFNO | Pendiente de validación | ¿S/4HANA actual incluye BRIM y/o RFNO activados? Pregunta bloqueante |
+| 2 | Coste licensing | Pendiente de validación | Sin cotización; potencialmente prohibitivo si no están incluidas |
+| 3 | Experiencia IT en BRIM/RFNO | Pendiente de validación | DSI sin experiencia confirmada; probablemente requiere consultoría externa |
+| 4 | Compatibilidad con sep 2026 | Pendiente de validación | Probablemente incompatible si requiere nueva licencia e implementación desde cero |
+| 5 | Roadmap IT corporativo | Pendiente de validación | Prioridad no establecida; no estaba en radar DSI en el momento de exploración |
+
+Todas las señales pendientes de validación — escenario no explorado con DSI
+
+### Criterio de decisión
+
+**PROFUNDIZAR si:**
+- DSI confirma que las licencias BRIM/RFNO ya están disponibles en el S/4HANA actual (sin coste adicional de adquisición)
+- La dirección acepta que este escenario es el objetivo SAP a largo plazo y complementa Escenario 3 como solución puente
+- El grupo tiene roadmap S/4HANA que incluye BRIM como dirección de billing de servicios
+
+**EN ESPERA (postura actual):**
+- Este escenario es el objetivo estratégico SAP a largo plazo; no cubre el plazo normativo de septiembre 2026
+- Debe presentarse a dirección como concepto antes de comprometer inversiones en Escenario 2 (CI sobre ISU)
+- La decisión de explorar en profundidad depende de la respuesta DSI sobre licencias
+
+**DESCARTAR si:**
+- Las licencias BRIM/RFNO no están disponibles y el coste de adquisición es prohibitivo
+- El roadmap IT corporativo no incluye este tipo de inversión en el horizonte relevante (3–5 años)
+- La dirección decide que el perímetro GNV/SEI no justifica la inversión en módulos especializados
+
+### Próximos pasos — Preguntas a DSI
+
+1. **Licencias disponibles:** ¿El S/4HANA actual del grupo incluye licencias BRIM (SAP Billing and Revenue Innovation Management) activadas o disponibles sin coste adicional? ¿Y RFNO/IS-OIL?
+2. **Experiencia interna:** ¿Existe experiencia en el equipo DSI en implementación BRIM para facturación de servicios? ¿O requeriría consultoría especializada externa?
+3. **Roadmap IT:** ¿Está en el roadmap IT del grupo la migración del perímetro de facturación de servicios (no utilities) a módulos BRIM a medio plazo?
+4. **Coste orientativo:** Si las licencias no están disponibles, ¿existe alguna referencia de coste de adquisición BRIM para el tamaño del perímetro GNV/SEI (255 facturas/mes, ~19MM EUR/año)?
+5. **Compatibilidad con sep 2026:** ¿Podría un desarrollo BRIM para GNV/SEI cumplir el plazo normativo si se inicia ahora, o hay que contemplar solución puente obligatoriamente?
