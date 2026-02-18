@@ -6,7 +6,7 @@ Visión global de todos los análisis funcionales realizados o en curso.
 
 | # | Nombre | Estado | Archivo | Inicio | Última actualización |
 |---|--------|--------|---------|--------|---------------------|
-| 1 | Facturación electrónica GNV/SEI — Análisis 4 escenarios + Matriz decisión | **En curso** | [`proyecto_facturacion_electronica.md`](proyecto_facturacion_electronica.md) | 2025 | Feb 2026 |
+| 1 | Facturación electrónica GNV/SEI — Análisis 4 escenarios + Matriz decisión | **En curso** | [`proyecto_facturacion_electronica.md`](proyecto_facturacion_electronica.md) | 2025 | 18 Feb 2026 |
 
 ## Estados posibles
 
@@ -18,6 +18,20 @@ Visión global de todos los análisis funcionales realizados o en curso.
 ---
 
 ## Detalle Estudio #1: Facturación Electrónica GNV/SEI
+
+### Estado actual (18 feb 2026)
+
+| | |
+|---|---|
+| **Plazo normativo** | **Septiembre 2026** — ~7 meses. Urgencia confirmada. |
+| **Postura recomendada** | Avanzar Escenario 3 (Kintsugi/MySQL+Python) como solución puente para sep 2026; en paralelo, visibilizar Escenario 4 a dirección como objetivo SAP definitivo |
+| **Prerequisitos bloqueantes** | (1) Spec técnica SERES incompleta → reunión SERES urgente; (2) Proceso Cobros GNV/SEI sin definir → kick-off Cobros; (3) Firma electrónica SERES sin confirmar |
+| **Escenario 1 — E4E** | 🔴 En espera — congelado hasta abril; posición E4E pendiente |
+| **Escenario 2 — SAP-ISU** | 🟡 Condicional — viable solo GNV; SEI incompatible por arquitectura |
+| **Escenario 3 — Kintsugi** | 🟢 Viable como transitorio — opción más rápida para sep 2026 |
+| **Escenario 4 — SAP BRIM/RFNO** | ⚪ Concepto a visibilizar — pendiente validación licencias DSI |
+
+---
 
 ### Objetivo
 
@@ -62,7 +76,7 @@ Analizar escenarios para implementar facturación electrónica GNV/SEI cumpliend
 - **Productos:** ✅ GNV cíclico, ✅ GNV one-shot, ✅ SEI
 - **Ventajas:** Impacto mínimo, rapidez implementación, autonomía funcional completa, datos completos en EVO, coste bajo
 - **Limitaciones:** NO resuelve cobros integrados, gestión estados SERES manual, Access punto único fallo, escalabilidad limitada (2GB), mantenibilidad largo plazo
-- **Riesgo bloqueante:** Access/VBA no puede generar XML válido, volumetría futura supera capacidad Access
+- **Riesgo bloqueante:** Complejidad UBL 2.1 subestimada sin soporte técnico externo; proceso Cobros sin definir (domiciliado hace rechazos críticos); dependencia en 2 personas sin cobertura formal
 - **Recomendación:** Válido como **puente temporal** si rapidez crítica o como solución definitiva si autonomía prioritaria y cobros manuales aceptables
 - **Estado análisis:** ✅ Completo (Resumen Ejecutivo + 42 preguntas dimensionadoras + Análisis Detallado)
 
@@ -77,7 +91,7 @@ Analizar escenarios para implementar facturación electrónica GNV/SEI cumpliend
 - **Limitaciones:** Coste licensing alto (RFNO+BRIM), plazo implementación largo (año), complejidad tres mundos SAP coexistentes
 - **Riesgo bloqueante:** Licensing prohibitivo, equipo SAP sin capacidad, prioridad roadmap baja
 - **Recomendación:** **Solución óptima si SAP estratégico + SEI crítico + presupuesto disponible**
-- **Estado análisis:** 🔄 **Debate estratégico abierto** - Sección 14 (Escenario 2) propone arquitectura, preguntas críticas, criterios decisión. Pendiente análisis completo si decisión explorar.
+- **Estado análisis:** 🔄 **Placeholder estructurado completo** — misma estructura que Esc 1/2/3 (qué es, ventajas hipotéticas, alertas, resumen señales, criterio de decisión, 5 preguntas a DSI). No explorado con DSI — objetivo es incluirlo en mapa de decisión ejecutivo antes de comprometer inversión en Escenario 2.
 
 ### Hallazgos técnicos clave
 
@@ -168,55 +182,50 @@ Investigación reveló **3 módulos SAP específicos** para gasineras/servicios 
 #### **Decisión táctica #3: Rapidez vs Robustez**
 
 **Contexto:**
-- ¿Obligación legal facturación electrónica tiene plazo inminente?
+- Plazo normativo **confirmado: septiembre 2026** (~7 meses desde feb 2026) — urgencia real
 
 **Impacto decisión:**
-- Plazo inminente → Escenario 3 (Kintsugi) como solución rápida, luego migrar
-- Sin urgencia → Escenarios 1/4 como soluciones definitivas
+- → **Escenario 3 (Kintsugi) como solución puente para sep 2026** — opción más rápida; Escenarios 1/4 no tienen tiempo hábil
+- → Escenario 4 como objetivo SAP a largo plazo, en paralelo con la solución puente
 
 ### Próximos pasos
 
-#### **Inmediato (próximas 2 semanas)**
+#### **Inmediato — prerequisitos que desbloquean todos los escenarios**
 
-1. **Workshop SAP/IT:** Validar disponibilidad RFNO/BRIM en S/4HANA Endesa
-2. **Decisión dirección:** Prioridad SEI (crítico vs marginal)
-3. **Decisión dirección:** Presupuesto disponible (licensing SAP vs solución departamental)
+1. **Reunión SERES (urgente):** Obtener spec técnica energía + documentación API + confirmar firma electrónica (¿XMLDSig o solo autenticación FTP?) — responsable: SERES
+2. **Kick-off Cobros:** Definir workflow gestión estados SERES para GNV/SEI domiciliado (rechazos/aceptaciones/corrección/reenvío) — responsable: Cobros
+3. **Pregunta DSI sobre licencias BRIM/RFNO:** ¿S/4HANA actual incluye BRIM/RFNO? ¿Experiencia interna? — responsable: DSI
 
-#### **Si decisión Escenario 1 (E4E)**
+#### **Escenario 3 — avanzar en paralelo (objetivo sep 2026)**
 
-4. Workshop departamento E4E (apertura proyecto, viabilidad técnica plataforma)
-5. Estudio técnico E4E (capacidad generación XML, librerías disponibles)
-6. Identificación sistema Cobros actual (viabilidad integración)
+4. Prototipo generador XML UBL 2.1 (Python leyendo MySQL) — test de viabilidad técnica más directo
+5. Formalizar con dirección: cobertura 2 personas clave + horizonte temporal + trigger de migración
 
-#### **Si decisión Escenario 3 (Kintsugi)**
+#### **Escenario 4 — visibilizar a dirección**
 
-4. POC técnico Access/VBA (generación XML UBL, validación XSD)
-5. Estudio librerías XML disponibles VBA (MSXML 6.0)
-6. Definir workflow gestión manual estados SERES
+6. Presentar concepto BRIM/RFNO a dirección antes de comprometer inversión en Escenario 2 (CI sobre ISU)
+7. Si DSI confirma licencias disponibles → profundizar análisis Escenario 4
 
-#### **Si decisión Escenario 4 (Especializado)**
+#### **Escenario 1 — en espera hasta abril**
 
-4. Estudio licensing RFNO+BRIM (coste, plazo activación)
-5. POC técnico BRIM (generación XML UBL, integración SERES)
-6. Análisis funcional completo Escenario 4 (estructura similar Esc 1/2/3)
-7. Decisión arquitectura (4A: RFNO+BRIM, 4B: IS-OIL, 4C: BRIM standalone)
-
-#### **Común a todos los escenarios**
-
-8. Estudio especificación técnica SERES (glosario UBL 2.1, API/FTP, ambiente pruebas)
-9. Análisis GAP datos EVO vs campos obligatorios UBL
-10. Identificación sistema Cobros actual (para Escenarios 1/4 con integración)
+8. Obtener valoración formal E4E tras presión del liderazgo (no solo "lo estudiaremos")
 
 ### Documentación generada
 
-- **Matriz de decisión ejecutiva:** Comparativa 4 escenarios en 19 criterios (inicio documento)
-- **Escenario 1:** Resumen ejecutivo + 34 preguntas dimensionadoras + Análisis detallado completo
-- **Escenario 2:** Resumen ejecutivo (actualizado con limitaciones) + Sección 2.3 arquitectura CI/ISU + Sección 4 módulos especializados + Sección 14 hacia Escenario 4 + 38 preguntas + Análisis detallado completo
-- **Escenario 3:** Resumen ejecutivo + 42 preguntas dimensionadoras + Análisis detallado completo
-- **Escenario 4:** Sección 14 (propuesta arquitectura, preguntas críticas, criterios decisión) - Pendiente análisis completo si decisión explorar
+Estructura actual de `proyecto_facturacion_electronica.md` (restructuración 18 feb 2026):
 
-**Total preguntas dimensionadoras:** 114 (34+38+42) para estimar esfuerzo antes de comprometerse.
+- **Header:** Plazo normativo sep 2026 visible desde la primera línea
+- **§1 Cuadro de mando ejecutivo:** 4 escenarios con semáforo + postura actual + prerequisitos bloqueantes + postura recomendada
+- **§2 Contexto:** Obligación normativa + deadline sep 2026
+- **§3 GNV y SEI: Dos universos distintos:** Tabla cobertura por escenario
+- **§4 Prerequisitos de decisión:** 4 incógnitas transversales con Responsable acción (SERES/Cobros/DSI)
+- **§5 Matriz comparativa:** Hallazgos reales por criterio × escenario (fila "Compatibilidad sep 2026" añadida)
+- **Escenario 1 (E4E):** Qué es / Ventajas / Limitaciones / 5 hallazgos (Pregunta→Respuesta→Análisis→Implicación) / Señales / Criterio de decisión / Próximos pasos
+- **Escenario 2 (SAP-ISU):** Misma estructura
+- **Escenario 3 (Kintsugi):** Misma estructura
+- **Escenario 4 (BRIM/RFNO):** Placeholder completo — misma estructura con todas las señales "Pendiente de validación" y 5 preguntas concretas a DSI
 
 ### Actualizaciones principales
 
 - **2026-02-14:** Hallazgo crítico arquitectura CI sobre ISU (incompatibilidad SEI), actualización Resumen Ejecutivo Escenario 2, descubrimiento módulos especializados SAP (RFNO/BRIM/IS-OIL), propuesta Escenario 4, creación matriz de decisión ejecutiva
+- **2026-02-18:** Reestructuración completa del documento — plazo normativo sep 2026 formalizado; nuevo Cuadro de mando ejecutivo con semáforos y postura recomendada; "Incógnitas transversales" elevadas a "Prerequisitos de decisión" con responsables; Escenario 4 pasa de referencia en Escenario 2 a sección independiente con estructura completa; jerarquía de headings corregida; postura recomendada actual definida (Esc 3 como puente + Esc 4 como objetivo estratégico)
