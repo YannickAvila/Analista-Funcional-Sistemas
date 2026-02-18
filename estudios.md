@@ -43,11 +43,11 @@ Analizar escenarios para implementar facturación electrónica GNV/SEI cumpliend
 
 ### Productos en alcance
 
-- **GNV (Gas Natural Vehicular):**
-  - GNV cíclico: Abonados con facturación mensual/bimestral regular
-  - GNV one-shot: Clientes pago tarjeta (eventos irregulares)
+- **GNV (Gas Natural Vehicular) — dos flujos distintos:**
+  - **GNV cíclico:** Abonados con facturación mensual/bimestral regular → factura emitida → en alcance e-invoicing
+  - **GNV ventas tarjeta:** Ventas directas en gasinera con pago por tarjeta bancaria → actualmente solo apunte contable del total en E4E (conciliación bancaria, sin factura emitida) → **alcance normativo pendiente aclarar:** ¿caen bajo e-reporting DGFiP? Si sí, amplía el alcance del proyecto
 - **SEI (Servicios):**
-  - Facturas esporádicas sin periodicidad (instalación, mantenimiento, otros servicios)
+  - Facturas esporádicas sin periodicidad (instalación, mantenimiento, otros servicios) → factura emitida → en alcance e-invoicing
 
 ### Escenarios analizados
 
@@ -55,7 +55,7 @@ Analizar escenarios para implementar facturación electrónica GNV/SEI cumpliend
 
 #### **Escenario 1: Adaptar E4E**
 - **Arquitectura:** Ampliar E4E (registro fiscal actual) para generación XML + comunicación SERES
-- **Productos:** ✅ GNV cíclico, ✅ GNV one-shot, ✅ SEI
+- **Productos:** ✅ GNV cíclico, ✅ SEI | GNV ventas tarjeta: sin cambio previsto (pendiente aclaración e-reporting)
 - **Ventajas:** Infraestructura existente, integración cobros (a validar), sistema corporativo
 - **Limitaciones:** Dependencia departamento E4E (apertura, viabilidad técnica), GAP funcional alto (MDG, XML, SERES)
 - **Riesgo bloqueante:** E4E rechaza proyecto o plataforma técnica inviable para XML
@@ -63,7 +63,7 @@ Analizar escenarios para implementar facturación electrónica GNV/SEI cumpliend
 
 #### **Escenario 2: SAP-ISU (CI sobre ISU actual)** ⚠️
 - **Arquitectura:** Convergent Invoicing instalado sobre SAP-ISU existente (configuración actual Electricidad)
-- **Productos:** ✅ GNV cíclico, ⚠️ GNV one-shot (requiere "trucos"), ❌ **SEI incompatible**
+- **Productos:** ✅ GNV cíclico, ❌ **SEI incompatible** | GNV ventas tarjeta: sin cambio previsto (pendiente aclaración e-reporting)
 - **HALLAZGO CRÍTICO:** CI sobre ISU hereda restricciones periodicidad de ISU (billing cycle obligatorio). SEI requiere facturas esporádicas sin patrón → **arquitectónicamente incompatible**.
 - **Ventajas:** Cobros integrados SAP FI-CA, sistema corporativo robusto, experiencia SAP Electricidad
 - **Limitaciones:** SEI inviable, configuración "tramposa" (forzar utilities a gasineras), complejidad alta, dependencia IBIS/Iliade
@@ -72,8 +72,8 @@ Analizar escenarios para implementar facturación electrónica GNV/SEI cumpliend
 - **Estado análisis:** ✅ Completo (Resumen Ejecutivo + Sección 2.3 arquitectura CI/ISU + 38 preguntas + Análisis Detallado + Sección 14 hacia Escenario 4)
 
 #### **Escenario 3: Kintsugi (Access/VBA)**
-- **Arquitectura:** Mantener proceso actual, Kintsugi añade generación XML + comunicación SERES
-- **Productos:** ✅ GNV cíclico, ✅ GNV one-shot, ✅ SEI
+- **Arquitectura:** Mantener proceso actual, Kintsugi añade generación XML + comunicación SERES (MySQL+Python como stack real)
+- **Productos:** ✅ GNV cíclico, ✅ SEI | GNV ventas tarjeta: sin cambio previsto (pendiente aclaración e-reporting)
 - **Ventajas:** Impacto mínimo, rapidez implementación, autonomía funcional completa, datos completos en EVO, coste bajo
 - **Limitaciones:** NO resuelve cobros integrados, gestión estados SERES manual, Access punto único fallo, escalabilidad limitada (2GB), mantenibilidad largo plazo
 - **Riesgo bloqueante:** Complejidad UBL 2.1 subestimada sin soporte técnico externo; proceso Cobros sin definir (domiciliado hace rechazos críticos); dependencia en 2 personas sin cobertura formal
@@ -86,7 +86,7 @@ Analizar escenarios para implementar facturación electrónica GNV/SEI cumpliend
   - 4A: RFNO (Retail Fuel Network Operations) + BRIM (Billing Revenue Innovation Management)
   - 4B: IS-OIL Downstream completo con SSR (Service Station Retailing)
   - 4C: BRIM standalone (solo facturación, sin operaciones gasineras)
-- **Productos:** ✅ GNV cíclico, ✅ GNV one-shot, ✅ SEI (BRIM soporta one-time charges nativamente)
+- **Productos:** ✅ GNV cíclico, ✅ SEI (BRIM nativo) | GNV ventas tarjeta: sin cambio previsto (pendiente aclaración e-reporting)
 - **Ventajas:** Solución definitiva corporativa, SEI viable (BRIM Provider Contract sin restricciones ISU), RFNO diseñado para gasineras (no configuración tramposa), cobros integrados SAP, escalabilidad alta
 - **Limitaciones:** Coste licensing alto (RFNO+BRIM), plazo implementación largo (año), complejidad tres mundos SAP coexistentes
 - **Riesgo bloqueante:** Licensing prohibitivo, equipo SAP sin capacidad, prioridad roadmap baja
@@ -228,4 +228,5 @@ Estructura actual de `proyecto_facturacion_electronica.md` (restructuración 18 
 ### Actualizaciones principales
 
 - **2026-02-14:** Hallazgo crítico arquitectura CI sobre ISU (incompatibilidad SEI), actualización Resumen Ejecutivo Escenario 2, descubrimiento módulos especializados SAP (RFNO/BRIM/IS-OIL), propuesta Escenario 4, creación matriz de decisión ejecutiva
+- **2026-02-18 (2):** Matiz GNV ventas tarjeta — distinción entre GNV cíclico (factura emitida, en alcance e-invoicing) y ventas directas en gasinera con tarjeta bancaria (apunte contable E4E, sin factura emitida); duda abierta sobre obligación e-reporting DGFiP; "GNV one-shot" retirado como concepto (era impreciso)
 - **2026-02-18:** Reestructuración completa del documento — plazo normativo sep 2026 formalizado; nuevo Cuadro de mando ejecutivo con semáforos y postura recomendada; "Incógnitas transversales" elevadas a "Prerequisitos de decisión" con responsables; Escenario 4 pasa de referencia en Escenario 2 a sección independiente con estructura completa; jerarquía de headings corregida; postura recomendada actual definida (Esc 3 como puente + Esc 4 como objetivo estratégico)
