@@ -19,6 +19,7 @@
 1. **Especificación SERES incompleta** — Sin campos energía, sin API documentada; ningún escenario puede dimensionarse sin esto
 2. **Proceso Cobros sin definir** — GNV/SEI opera en domiciliado; los rechazos SERES son funcionalmente críticos y no hay workflow establecido
 3. **Firma electrónica SERES sin confirmar** — Modelo FTP sugiere sin XMLDSig, pero no está validado; condiciona el esfuerzo técnico de cualquier escenario
+4. **Alcance GNV ventas tarjeta sin determinar** — Las ventas en gasinera con tarjeta solo tienen apunte contable en E4E (sin factura emitida); pendiente aclarar si caen bajo e-reporting normativo francés → afecta al alcance del proyecto
 
 **Postura recomendada actual:** Avanzar en Escenario 3 (Kintsugi/MySQL+Python) como solución puente para septiembre 2026, en paralelo con: (a) reunión urgente SERES para spec energía y confirmación firma, (b) kick-off proceso Cobros, (c) visibilización Escenario 4 a dirección como objetivo SAP definitivo a largo plazo.
 
@@ -36,15 +37,19 @@
 
 GNV y SEI no son un monolito. Su naturaleza de facturación es radicalmente diferente, y esto tiene implicaciones directas sobre qué escenarios pueden cubrir cada producto.
 
-| | **GNV (abonados gasineras)** | **SEI (servicios ingeniería)** |
-|---|---|---|
-| **Volumen** | 250 facturas/mes | ~5 facturas/mes (irregular) |
-| **Importe** | 17MM EUR/año | 1,8MM EUR/año |
-| **Tipo** | Periódica regular (billing cycle) | Esporádica sin patrón |
-| **Esc 1 — E4E** | Sí | Sí |
-| **Esc 2 — SAP-ISU** | Sí (GNV cíclico, con condiciones) | No — incompatible por diseño |
-| **Esc 3 — Kintsugi** | Sí | Sí |
-| **Esc 4 — SAP especializado** | Sí | Sí (BRIM diseñado para eventos esporádicos) |
+| | **GNV cíclico (abonados gasineras)** | **GNV ventas tarjeta (gasinera)** | **SEI (servicios ingeniería)** |
+|---|---|---|---|
+| **Volumen** | 250 facturas/mes | Agregado mensual (nº transacciones indeterminado) | ~5 facturas/mes (irregular) |
+| **Importe** | 17MM EUR/año | A determinar | 1,8MM EUR/año |
+| **Tipo** | Periódica regular (billing cycle) | Transacciones de venta directa; sin factura emitida | Esporádica sin patrón |
+| **Tratamiento actual** | Factura PDF emitida vía Kintsugi → E4E | Solo apunte contable del total en E4E (conciliación bancaria) | Factura PDF emitida vía Kintsugi → E4E |
+| **¿En alcance e-invoicing?** | Sí — factura B2B emitida | Pendiente aclarar (ver nota) | Sí — factura B2B emitida |
+| **Esc 1 — E4E** | Sí | Sin cambio previsto | Sí |
+| **Esc 2 — SAP-ISU** | Sí (con condiciones) | Sin cambio previsto | No — incompatible por diseño |
+| **Esc 3 — Kintsugi** | Sí | Sin cambio previsto | Sí |
+| **Esc 4 — SAP especializado** | Sí | Sin cambio previsto | Sí (BRIM nativo) |
+
+**Nota GNV ventas tarjeta:** Las ventas directas en gasinera con pago por tarjeta bancaria no generan actualmente una factura emitida — solo se registra el importe total en E4E como apunte contable para conciliar con los movimientos bancarios entrantes. El tratamiento actual podría quedar como está si estas ventas no caen bajo la obligación normativa de e-invoicing (al no haber factura emitida). **Duda abierta:** ¿Estas transacciones caen bajo la obligación de e-reporting de la normativa francesa? (El e-reporting cubre operaciones que no requieren factura pero sí comunicación de datos de transacción a la DGFiP.) Requiere aclaración legal/fiscal antes de definir alcance definitivo del proyecto. Ver Prerequisito #5.
 
 **Nota Escenario 2:** CI sobre ISU hereda el billing cycle periódico de ISU (utilities). SEI no tiene patrón regular — forzarlo exigiría configuraciones artificiales. En España, servicios equivalentes van por módulo SD. La vía para SEI en SAP queda abierta: SD Francia, integración con España, u otra solución.
 
@@ -60,6 +65,7 @@ Estas incógnitas bloquean o condicionan todos los escenarios. Deben resolverse 
 | Firma electrónica SERES | Sin confirmar (modelo FTP sugiere sin XMLDSig) | Pregunta directa a SERES: ¿firma a nivel documento o solo autenticación canal FTP? | SERES |
 | Proceso Cobros GNV/SEI para estados SERES | No definido: Cobros asumía transferencias, pero GNV/SEI va en domiciliado | Reunión Cobros para definir workflow rechazos/aceptaciones (prerequisito de cualquier escenario) | Cobros |
 | Escenario 4 (BRIM/RFNO) — disponibilidad licencias | Desconocida: DSI no tenía este concepto en el radar | Pregunta a DSI: ¿S/4HANA actual incluye licencias BRIM y/o RFNO? | DSI |
+| GNV ventas tarjeta — ¿obligación e-reporting? | Sin determinar: actualmente solo apunte contable en E4E (no hay factura emitida); si estas transacciones caen bajo e-reporting normativo, el alcance del proyecto se amplía | Aclaración legal/fiscal: ¿las ventas directas en gasinera con tarjeta bancaria están sujetas a e-reporting DGFiP? Si sí → definir qué datos comunicar y por qué canal | Dirección / Legal |
 
 ---
 
